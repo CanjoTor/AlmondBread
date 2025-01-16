@@ -89,7 +89,7 @@ int main()
 
   std::ofstream file("../output/output.txt", std::ios::app);
 
-  for (std::size_t grain_size : {1, 10, 100, 1000})
+  for (std::size_t grain_size : {1, 2, 3, 4, 5, 10, 20, 40, 70,  100, 200, 400, 600, 1000})
   {
 
     tbb::parallel_for(
@@ -116,7 +116,7 @@ int main()
           }
           // Time measurement for each grain_size
           auto stop = std::chrono::high_resolution_clock::now();
-          auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+          auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
 
           t = duration.count();
 
@@ -137,11 +137,11 @@ int main()
         );
 
     // Save the time and grain size to the output file etc.
-    std::cout << "Time: " << t << " µs" << " Grain size: " << grain_size << std::endl;
+    std::cout << "Time: " << t << " ns" << " Grain size: " << grain_size << std::endl;
 
     if (file.is_open())
     {
-      file << "Time: " << t  << " µs" << " Grain size: " << grain_size << "\n";
+      file << "Time: " << t  << " ns" << " Grain size: " << grain_size << "\n";
     }
     mandelbrot_image.saveToFile("../output/mandelbrot" + std::to_string(grain_size) + ".png");
     std::string str = "../output/time_by_element" + std::to_string(grain_size) + ".png"; //"../output/time_by_element.png"
